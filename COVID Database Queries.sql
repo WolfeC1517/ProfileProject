@@ -1,3 +1,7 @@
+-- Set working database
+
+USE PortfolioProject
+GO
 
 -- Looking at Total Cases vs Total Deaths
 -- Percentage Likelihood of Death on infection
@@ -158,11 +162,11 @@ ORDER BY
 
 
 -- Global mortality rate listed by date. CREATE VIEW is used to compare with the second calculation.
+-- DROP VIEW includeded for convinience
 
-
-USE PortfolioProject
+DROP VIEW IF EXISTS global_mortality_rate
 GO
-CREATE OR ALTER VIEW global_mortality_rate AS
+CREATE VIEW global_mortality_rate AS
 SELECT 
 	FORMAT(date, 'yyyy/MM/dd') AS report_date,
 	location,
@@ -173,16 +177,16 @@ FROM
 	PortfolioProject..CovidDeaths$
 WHERE
 	location = 'world'
+GO
 
 
 -- Same as the last but rather than use the global number provided in the report, I calculated the sum of
 -- all cases in the report. Not as accurate as using the global numbers above, but good for double checking.
 -- Again CREATE VIEW is used for comparison.
 
-
-USE PortfolioProject
+DROP VIEW IF EXISTS summed_mortality_rate
 GO
-CREATE OR ALTER VIEW summed_mortality_rate AS
+CREATE VIEW summed_mortality_rate AS
 SELECT 
 	FORMAT(date, 'yyyy/MM/dd') AS report_date,
 	SUM(CAST(total_cases AS FLOAT)) AS global_cases,
@@ -194,7 +198,7 @@ WHERE
 	continent IS NOT NULL
 GROUP BY
 	date
-
+GO
 
 -- Both VIEWs are compared and there is found to be less than a 0.1% difference between the two.
 
@@ -346,11 +350,9 @@ FROM #percent_population_vaccinated
 
 
 -- Creating a VIEW to store data for later data visualizations
-
-
-USE PortfolioProject
+DROP VIEW IF EXISTS percent_population_vaccinated
 GO
-CREATE OR ALTER VIEW percent_population_vaccinated AS
+CREATE VIEW percent_population_vaccinated AS
 SELECT 
 	dea.continent, 
 	dea.location, 
@@ -364,3 +366,4 @@ JOIN PortfolioProject..CovidDeaths$ dea
 	ON dea.location = vac.location
 	AND dea.date = vac.date
 WHERE dea.continent IS NOT NULL
+GO
