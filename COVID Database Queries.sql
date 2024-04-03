@@ -37,7 +37,7 @@ ORDER BY
 
 
 
--- Show the infection rate of each country and orders them by the highest rate of infection
+-- Show the infection rate of each country and order them by the highest rate of infection
 
 SELECT 
 	location,
@@ -157,7 +157,7 @@ ORDER BY
 
 
 
--- Global mortality rate listed by date. CREATE VIEW used to compare with the second calculation.
+-- Global mortality rate listed by date. CREATE VIEW is used to compare with the second calculation.
 
 
 USE PortfolioProject
@@ -177,7 +177,7 @@ WHERE
 
 -- Same as the last but rather than use the global number provided in the report, I calculated the sum of
 -- all cases in the report. Not as accurate as using the global numbers above, but good for double checking.
--- Again CREATE VIEW used for comparison.
+-- Again CREATE VIEW is used for comparison.
 
 
 USE PortfolioProject
@@ -273,7 +273,7 @@ ORDER BY
 	date
 
 
--- Again but this time I listed the max number of vaccines by country.
+-- The same CTE however I used the code to list the maximum number of vaccines by country.
 
 
 WITH  max_vac (continent, location, date, population, new_vaccinations, rolling_vaccination_counter)
@@ -345,7 +345,7 @@ FROM #percent_population_vaccinated
 
 
 
--- Creating view to store data for later data visualizations
+-- Creating a VIEW to store data for later data visualizations
 
 
 USE PortfolioProject
