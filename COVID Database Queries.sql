@@ -1,7 +1,19 @@
+/*
+
+Data review and organization
+
+*/
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
 -- Set working database
 
 USE PortfolioProject
 GO
+
+
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Looking at Total Cases vs Total Deaths
 -- Percentage Likelihood of Death on infection
@@ -20,9 +32,12 @@ WHERE
 ORDER BY 
 	location, report_date
 
-	
+
+--------------------------------------------------------------------------------------------------------------------------	
+
 -- Looking at Total number of COVID Cases vs Population in the U.S.
 -- Shows what percentage of the population contracted COVID
+	
 SELECT 
 	location,
 	FORMAT(date, 'yyyy/MM/dd') AS report_date,
@@ -40,6 +55,7 @@ ORDER BY
 
 
 
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Show the infection rate of each country and order them by the highest rate of infection
 
@@ -59,8 +75,7 @@ ORDER BY
 	MAX(CAST(total_cases AS FLOAT))/population DESC
 
 
-
-
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Shows the Death count per country and sorts them from highest to lowest
 
@@ -78,7 +93,7 @@ ORDER BY
 
 
 
-
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Show max death rate of each country per capita
 
@@ -101,7 +116,7 @@ ORDER BY
 
 
 
-
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Show max death rate of each country per case
 
@@ -122,6 +137,7 @@ ORDER BY
 
 
 
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Show max death rate of each country per capita & per case
 
@@ -144,6 +160,8 @@ ORDER BY
 	MAX(CAST(total_deaths AS FLOAT))/MAX(CAST(total_cases AS FLOAT)) DESC
 
 
+--------------------------------------------------------------------------------------------------------------------------
+
 -- Data by Continent
 
 
@@ -160,6 +178,7 @@ ORDER BY
 	total_death_count DESC
 
 
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Global mortality rate listed by date. CREATE VIEW is used to compare with the second calculation.
 -- DROP VIEW includeded for convinience
@@ -179,6 +198,8 @@ WHERE
 	location = 'world'
 GO
 
+
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Same as the last but rather than use the global number provided in the report, I calculated the sum of
 -- all cases in the report. Not as accurate as using the global numbers above, but good for double checking.
@@ -200,6 +221,9 @@ GROUP BY
 	date
 GO
 
+
+--------------------------------------------------------------------------------------------------------------------------
+
 -- Both VIEWs are compared and there is found to be less than a 0.1% difference between the two.
 
 SELECT
@@ -218,7 +242,11 @@ ORDER BY
 	report_date
 
 
+
+--------------------------------------------------------------------------------------------------------------------------
+
 -- Shows the weekly reported number of new cases and deaths. The report shows us that it was updated weekly on Sunday.
+
 SELECT
 	FORMAT(date, 'yyyy/MM/dd'),
 	FORMAT(date, 'dddd') AS day_of_week,
@@ -233,6 +261,9 @@ ORDER BY
 	1,
 	2
 
+
+
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Analysis of population vs Vaccinations by location and date
 
@@ -250,6 +281,9 @@ JOIN PortfolioProject..CovidDeaths$ dea
 WHERE dea.continent IS NOT NULL
 ORDER BY 2, 3
 
+
+
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Used CTE to create a rolling vaccination counter by location and date.
 
@@ -276,6 +310,9 @@ ORDER BY
 	location,
 	date
 
+
+
+--------------------------------------------------------------------------------------------------------------------------
 
 -- The same CTE however I used the code to list the maximum number of vaccines by country.
 
@@ -310,6 +347,7 @@ ORDER BY
 
 
 
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Temp Table; same information as above but stored as a table that I can use later.
 
@@ -348,8 +386,10 @@ FROM #percent_population_vaccinated
 
 
 
+--------------------------------------------------------------------------------------------------------------------------
 
 -- Creating a VIEW to store data for later data visualizations
+
 DROP VIEW IF EXISTS percent_population_vaccinated
 GO
 CREATE VIEW percent_population_vaccinated AS
